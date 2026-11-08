@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>کٹنگ شیٹ</title>
+<meta name="theme-color" content="#1b2a4a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="کٹنگ ماسٹر">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#eceff4; --surface:#ffffff; --ink:#1b2a4a; --muted:#5b6785; --line:#d3d9e6;
+  --tape:#f3c623; --tape-ink:#2a2200; --seam:#c8372d; --chalk:#3d6cb9; --field:#f6f8fb;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#10172a; --surface:#192341; --ink:#e9edf7; --muted:#9aa6c4; --line:#2c3a63;
+    --tape:#f3c623; --tape-ink:#2a2200; --seam:#ff7a6e; --chalk:#8fb2ee; --field:#101a33;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq','Noto Naskh Arabic','Segoe UI',Tahoma,sans-serif;
+  line-height:1.9; font-size:16px;
+}
+.wrap{max-width:560px; margin:0 auto; padding:0 14px 60px}
+header{
+  background:var(--ink); color:#fff; margin:0 -14px 16px; padding:18px 18px 26px; position:relative;
+}
+@media (prefers-color-scheme: dark){ header{background:#0a0f1e} }
+header h1{margin:0; font-size:26px; font-weight:700; line-height:1.6}
+header p{margin:0; color:#c5cee6; font-size:14px}
+header::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:12px;
+  background:var(--tape);
+  background-image:repeating-linear-gradient(to left, transparent 0 9px, rgba(42,34,0,.75) 9px 10px);
+  -webkit-mask-image:linear-gradient(#000,#000);
+}
+section.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:14px; margin-bottom:14px;
+}
+h2{margin:0 0 10px; font-size:19px; line-height:1.7}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.full{grid-column:1/-1}
+label{display:block; font-size:14px; color:var(--muted); margin-bottom:2px}
+input[type=number], input[type=text], select{
+  width:100%; padding:9px 10px; font:inherit; font-size:17px; color:var(--ink);
+  background:var(--field); border:1.5px solid var(--line); border-radius:8px;
+}
+input:focus, select:focus{outline:3px solid var(--chalk); outline-offset:1px; border-color:var(--chalk)}
+.checks{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:4px}
+.checks label{display:flex; align-items:center; gap:8px; color:var(--ink); font-size:15px; margin:0}
+.checks input{width:20px; height:20px; accent-color:var(--chalk)}
+.hint{font-size:13px; color:var(--muted); margin:8px 0 0; line-height:1.8}
+.group h3{
+  margin:18px 0 6px; font-size:18px; padding:2px 10px;
+  border-right:5px solid var(--seam);
+}
+.row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:9px 0; border-bottom:1px dashed var(--line);
+}
+.row:last-child{border-bottom:0}
+.row .name{flex:1}
+.row .name b{display:block; font-weight:600; font-size:16px}
+.row .name small{display:block; color:var(--muted); font-size:12.5px; line-height:1.6}
+.val{
+  min-width:128px; text-align:center; background:var(--tape); color:var(--tape-ink);
+  border-radius:6px; padding:5px 8px 12px; position:relative; flex-shrink:0;
+}
+.val::after{
+  content:""; position:absolute; left:6px; right:6px; bottom:4px; height:6px;
+  background-image:repeating-linear-gradient(to left, rgba(42,34,0,.7) 0 1px, transparent 1px 6px);
+}
+.val .w{display:block; font-weight:700; font-size:15px; line-height:1.7}
+.val .n{display:block; font-size:13px; direction:ltr; font-family:Tahoma,Arial,sans-serif; opacity:.85}
+.empty{color:var(--muted); text-align:center; padding:20px 0}
+details{margin-top:6px}
+summary{cursor:pointer; padding:8px 0; font-weight:600}
+.method{padding:8px 0; border-bottom:1px dashed var(--line); font-size:15px}
+.method:last-child{border-bottom:0}
+.method b{color:var(--seam)}
+footer{font-size:13px; color:var(--muted); text-align:center; margin-top:10px}
+.step{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.step h2{margin:0}
+.badge{background:var(--ink);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:15px;line-height:1;flex-shrink:0}
+@media (prefers-color-scheme: dark){.badge{background:var(--tape);color:var(--tape-ink)}}
+.out{margin-top:10px}
+.out:empty{display:none}
+.note{margin:10px 0 0;padding:8px 10px;border-right:4px solid var(--chalk);background:var(--field);font-size:14px;color:var(--muted);line-height:1.9}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;margin:0 0 6px}
+.sum div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:2px 0;font-size:15px}
+.sum span:last-child{font-weight:700;direction:ltr;font-family:Tahoma,Arial,sans-serif}
+.sheet-title{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.sheet-title h2{margin:0}
+.sheet-title small{color:var(--muted)}
+.group h3{display:flex;align-items:center;gap:8px}
+.btn{font:inherit;font-size:16px;background:var(--ink);color:#fff;border:0;border-radius:8px;padding:8px 16px;cursor:pointer}
+@media (prefers-color-scheme: dark){.btn{background:var(--tape);color:var(--tape-ink)}}
+.btn:focus-visible{outline:3px solid var(--chalk);outline-offset:2px}
+.printonly{display:none}
+#sdate{direction:ltr;unicode-bidi:isolate;font-family:Tahoma,Arial,sans-serif}
+@media print{
+  :root{--bg:#fff;--surface:#fff;--ink:#111;--muted:#444;--line:#bbb;--tape:#f3c623;--tape-ink:#2a2200;--seam:#c8372d;--chalk:#3d6cb9;--field:#fff;color-scheme:light}
+  body{background:#fff;font-size:14px}
+  header,.noprint,.inputs,details,footer{display:none !important}
+  .printonly{display:block}
+  .wrap{max-width:none;padding:0}
+  section.card{border:0;padding:0;margin:0 0 8px}
+  .row,h3{break-inside:avoid;page-break-inside:avoid}
+  h3{break-after:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>کٹنگ ماسٹر</h1>
+  <p>اکبر علی کی کٹنگ ایپ: ناپ لکھیں، ساری کٹنگ ایک ساتھ دیکھیں</p>
+</header>
+
+<section class="card inputs">
+  <h2>گاہک اور ناپ (انچ میں)</h2>
+  <div class="grid">
+    <div class="full"><label for="cname">گاہک کا نام</label><input id="cname" type="text" placeholder="نام لکھیں"></div>
+    <div><label for="len">قمیض کی لمبائی</label><input id="len" type="number" inputmode="decimal" step="0.125" placeholder="36.5"></div>
+    <div><label for="sleeve">بازو کی لمبائی</label><input id="sleeve" type="number" inputmode="decimal" step="0.125" placeholder="24"></div>
+    <div><label for="tlen">تیرے کی لمبائی</label><input id="tlen" type="number" inputmode="decimal" step="0.125" placeholder="16"></div>
+    <div><label for="collar">کالر / بین کی لمبائی</label><input id="collar" type="number" inputmode="decimal" step="0.125" placeholder="15"></div>
+    <div><label for="chest">چھاتی (گول)</label><input id="chest" type="number" inputmode="decimal" step="0.125" placeholder="46"></div>
+    <div><label for="waist">پیٹ (گول)</label><input id="waist" type="number" inputmode="decimal" step="0.125" placeholder="44"></div>
+    <div><label for="hip">ہپ (گول)</label><input id="hip" type="number" inputmode="decimal" step="0.125" placeholder="47"></div>
+    <div><label for="shal">شلوار کی لمبائی</label><input id="shal" type="number" inputmode="decimal" step="0.125" placeholder="34"></div>
+    <div><label for="pain">پائنچہ</label><input id="pain" type="number" inputmode="decimal" step="0.125" placeholder="9"></div>
+  </div>
+  <p class="hint">آدھا = ‎.5 ، سوا = ‎.25 ، پونا = ‎.75 ، ایک سوتر = ‎.125 (انچ کا آٹھواں حصہ)۔ مثلاً ساڑھے 36 = 36.5</p>
+  <details open>
+    <summary>ترتیبات (ضرورت ہو تو بدلیں)</summary>
+    <div class="three" style="margin-top:6px">
+      <div><label for="addC">چھاتی: اضافہ</label><input id="addC" type="number" inputmode="decimal" step="0.125" value="4"></div>
+      <div><label for="addW">پیٹ: اضافہ</label><input id="addW" type="number" inputmode="decimal" step="0.125" value="4.5"></div>
+      <div><label for="addH">ہپ: اضافہ</label><input id="addH" type="number" inputmode="decimal" step="0.125" value="5"></div>
+    </div>
+    <p class="hint">تیار چوڑائی = ناپ ÷ 2 + اضافہ۔ پتلے یا موٹے گاہک کے لیے اضافہ خود بدل لیں۔</p>
+    <div class="grid" style="margin-top:6px">
+      <div><label for="back">بیک کی کٹنگ</label>
+        <select id="back">
+          <option value="0.5">آدھا انچ</option>
+          <option value="0.75">پونا انچ</option>
+          <option value="1" selected>ایک انچ</option>
+          <option value="1.25">سوا انچ</option>
+          <option value="1.5">ڈیڑھ انچ</option>
+          <option value="2">دو انچ</option>
+        </select>
+      </div>
+      <div><label for="cuff">بازو کا منہ</label>
+        <select id="cuff">
+          <option value="chak" selected>چاک پٹی (کف) والا</option>
+          <option value="plain">سادہ (بغیر چاک پٹی)</option>
+        </select>
+      </div>
+      <div><label for="stype">شلوار کی قسم</label>
+        <select id="stype">
+          <option value="fit">فٹنگ والی</option>
+          <option value="normal" selected>نارمل</option>
+          <option value="loose">کھلی</option>
+        </select>
+      </div>
+      <div><label for="kandha">تیار کندھا (اگر خود ناپا ہو)</label><input id="kandha" type="number" inputmode="decimal" step="0.125" placeholder="خالی = فارمولا"></div>
+      <div><label for="mouthO">سادہ بازو کا منہ (خود لکھیں)</label><input id="mouthO" type="number" inputmode="decimal" step="0.125" placeholder="خالی = ٹیبل"></div>
+    </div>
+    <div class="checks"><label><input type="checkbox" id="fpocket"> فرنٹ پاکٹ ہے</label></div>
+  </details>
+</section>
+
+<section class="card group" id="sheetcard">
+  <div class="sheet-title">
+    <h2 id="stitle">کٹنگ کی ترتیب</h2>
+    <small id="sdate"></small>
+  </div>
+  <div id="sheet"><div class="empty">اوپر ناپ لکھتے جائیں، ساری کٹنگ یہاں ترتیب سے آتی جائے گی</div></div>
+  <p class="noprint" style="margin:14px 0 0;text-align:center">
+    <button class="btn" id="pdfbtn" type="button">پی ڈی ایف بنائیں</button>
+  </p>
+  <p class="hint noprint" id="pdfhint" style="text-align:center">کھلنے والی ونڈو میں "Save as PDF" (پی ڈی ایف محفوظ کریں) چنیں۔</p>
+</section>
+
+<section class="card noprint">
+  <h2>کپڑے کی ترتیب (کتاب کے طریقے)</h2>
+  <details>
+    <summary>کون سا طریقہ کب استعمال ہوتا ہے</summary>
+    <div class="method"><b>طریقہ 1:</b> جب کپڑے کا ڈبل عرض قمیض کے تیار دامن سے کم از کم ایک انچ بڑا ہو۔ کپڑا 4 میٹر (156 انچ)، چوڑائی 26 انچ یعنی فل عرض 52 انچ۔</div>
+    <div class="method"><b>طریقہ 2:</b> جب کپڑے کا ڈبل عرض قمیض کے گھیرے سے کم ہو، اس لیے کپڑے کا پورا عرض کھول کر کٹنگ کریں۔ کپڑا 4 میٹر (156 انچ)، چوڑائی 26 انچ یعنی فل عرض 52 انچ۔</div>
+    <div class="method"><b>طریقہ 3:</b> جب ڈبل عرض تقریباً 17 انچ ہو اور لمبائی تقریباً 7 میٹر (273 انچ)۔ فل عرض 34 انچ۔</div>
+    <div class="method"><b>طریقہ 4:</b> جب ڈبل عرض تقریباً 22 سے 25 انچ ہو اور لمبائی تقریباً 5 میٹر (195 انچ)۔ فل عرض 50 انچ۔</div>
+    <div class="method">کتاب کی مثال میں فرنٹ اور بیک کا ٹکڑا 24×40، شلوار کا ٹکڑا 40×22 اور بازو 22 دکھایا گیا ہے۔ نیلے رنگ والا کپڑا اضافی ہے، جو خرچہ پریس کرنے میں استعمال ہو سکتا ہے۔</div>
+  </details>
+</section>
+
+<footer>اکبر علی کی ذاتی کٹنگ ایپ</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const r8 = x => Math.round(x * 8) / 8;
+
+// کتاب کے ٹیبل (کالر کے حساب سے)
+const T_HALA_W = {10:1.25,11:1.25,12:1.5,13:1.5,14:1.75,15:1.875,16:2,17:2,18:2.25,19:2.25};
+const T_HALA_D = {10:1.75,11:1.75,12:2,13:2.125,14:2.25,15:2.5,16:2.625,17:2.75,18:3,19:3.125};
+const T_TEEK   = {10:1.25,11:1.25,12:1.5,13:1.5,14:1.75,15:1.75,16:2,17:2,18:2.25,19:2.25};
+
+// شلوار کا چارٹ: [لمبائی, فٹنگ, نارمل, کھلی, آسن]
+const SH = [
+  [20,10,12,13,12],[22,12,13,14,13],[24,13,14,15,14],[26,14,16,17,15],
+  [28,15,17,18,16],[30,16,17,18,16],[32,17,18,19,16],[34,18,19,20,17],
+  [36,19,20,21,18],[38,20,21,22,19],[40,20,21,22,20],[42,21.5,22,23,20.5]
+];
+function shTable(len, col){
+  if (len < 20 || len > 42) return null;
+  for (let i = 0; i < SH.length; i++){
+    if (SH[i][0] === len) return SH[i][col];
+    if (SH[i][0] > len){
+      const a = SH[i-1], b = SH[i];
+      const v = a[col] + (b[col]-a[col]) * (len-a[0])/(b[0]-a[0]);
+      return Math.round(v*2)/2;
+    }
+  }
+  return null;
+}
+// سادہ بازو کا تیار منہ (چھاتی کے حساب سے)
+function plainMouth(c){
+  if (c <= 23) return 4;
+  if (c <= 29) return 5;
+  if (c <= 35) return 6;
+  if (c <= 43) return 6.25;
+  if (c <= 51) return 6.5;
+  if (c <= 57) return 7;
+  return 7.5;
+}
+function nm(k){ return k===1 ? 'ایک' : k===2 ? 'دو' : String(k); }
+function base(n, e){ // e: 0,2,4,6 آٹھویں حصے
+  if (e===0) return n + ' انچ';
+  if (e===2) return 'سوا ' + nm(n) + ' انچ';
+  if (e===4) return n===1 ? 'ڈیڑھ انچ' : n===2 ? 'ڈھائی انچ' : 'ساڑھے ' + n + ' انچ';
+  return 'پونے ' + nm(n+1) + ' انچ';
+}
+function words(x){
+  x = r8(x);
+  let n = Math.floor(x + 1e-9), e = Math.round((x - n) * 8);
+  if (e === 8){ n++; e = 0; }
+  if (n === 0){
+    const m = {0:'صفر',1:'ایک سوتر',2:'چوتھائی انچ',3:'تین سوتر',4:'آدھا انچ',5:'پانچ سوتر',6:'پونا انچ',7:'سات سوتر'};
+    return m[e];
+  }
+  if (e === 7) return 'ایک سوتر کم ' + nm(n+1) + ' انچ';
+  if (e % 2 === 1) return base(n, e-1) + ' ایک سوتر';
+  return base(n, e);
+}
+function num(x){ return String(+x.toFixed(3)) + ' in'; }
+
+
+function rowsHtml(items){
+  let h = '';
+  for (const [name, v, f] of items){
+    if (v === null) continue;
+    h += '<div class="row"><div class="name"><b>' + name + '</b><small>' + f + '</small></div>' +
+         '<div class="val"><span class="w">' + words(v) + '</span><span class="n">' + num(r8(v)) + '</span></div></div>';
+  }
+  return h;
+}
+
+
+function rowsHtml(items){
+  let h = '';
+  for (const [name, v, f] of items){
+    if (v === null) continue;
+    h += '<div class="row"><div class="name"><b>' + name + '</b><small>' + f + '</small></div>' +
+         '<div class="val"><span class="w">' + words(v) + '</span><span class="n">' + num(r8(v)) + '</span></div></div>';
+  }
+  return h;
+}
+function esc(t){ return t.replace(/[<>&"]/g, ''); }
+function n2(x){ return String(+x.toFixed(3)); }
+
+function calc(){
+  const g = id => { const v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : null; };
+  const gz = (id, d) => { const v = parseFloat($(id).value); return isFinite(v) ? v : d; };
+  const len=g('len'), chest=g('chest'), waist=g('waist'), hip=g('hip'), collar=g('collar'),
+        sleeve=g('sleeve'), shal=g('shal'), pain=g('pain'), kand=g('kandha'), tl=g('tlen'), mouthO=g('mouthO');
+  const addC=gz('addC',4), addW=gz('addW',4.5), addH=gz('addH',5);
+  const back = parseFloat($('back').value), fp = $('fpocket').checked, plain = $('cuff').value === 'plain';
+  const stype = $('stype').value, col = {fit:1, normal:2, loose:3}[stype];
+  const stName = {fit:'فٹنگ', normal:'نارمل', loose:'کھلی'}[stype];
+  const isInt = collar !== null && Number.isInteger(collar);
+
+  const hw = collar===null ? null : (isInt && T_HALA_W[collar] !== undefined ? T_HALA_W[collar] : r8(collar/8));
+  const hd = collar===null ? null : (isInt && T_HALA_D[collar] !== undefined ? T_HALA_D[collar] : r8(collar/6));
+  const mouth = len===null ? null : r8(len/6 + 0.5);
+  const readyK = kand !== null ? kand : (chest===null ? null : r8(chest/4));
+  const thala = collar===null ? null : r8(collar/6) + 0.5;
+
+  const secs = [];
+  secs.push(['قمیض کی لمبائی', rowsHtml([
+    ['قمیض کاٹنے کی لمبائی', len===null?null:len+1, 'تیار لمبائی + 1 انچ'],
+  ])]);
+  secs.push(['قمیض کی چوڑائی', rowsHtml([
+    ['چھاتی پر تیار چوڑائی', chest===null?null:chest/2+addC, 'چھاتی ÷ 2 + ' + n2(addC)],
+    ['پیٹ پر تیار چوڑائی', waist===null?null:waist/2+addW, 'پیٹ ÷ 2 + ' + n2(addW)],
+    ['ہپ پر تیار چوڑائی', hip===null?null:hip/2+addH, 'ہپ ÷ 2 + ' + n2(addH)],
+  ])]);
+  secs.push(['کالر، کندھا، بیک، پاکٹ اور پٹی', rowsHtml([
+    ['کالر کے ہالے کی چوڑائی', hw, 'کالر ÷ 8'],
+    ['کالر کے ہالے کی گہرائی', hd, 'کالر ÷ 6'],
+    ['فرنٹ کندھا ڈاؤن', chest===null?null:r8(chest/16), 'چھاتی ÷ 16'],
+    ['بیک کی کٹنگ', (len===null&&chest===null&&collar===null)?null:back, 'چنی ہوئی کٹنگ'],
+    ['سائیڈ پاکٹ سے اوپر والا کٹ', len===null?null:r8(len/10), 'لمبائی ÷ 10'],
+    ['سائیڈ پاکٹ سے نیچے والا کٹ', len===null?null:r8(len/10+0.5), 'لمبائی ÷ 10 + آدھا انچ'],
+    ['سائیڈ پاکٹ کے منہ کا کٹ', mouth, 'لمبائی ÷ 6 + آدھا انچ'],
+    ['سائیڈ پاکٹ کی لمبائی', mouth===null?null:mouth*3, 'پاکٹ کٹ × 3'],
+    ['سائیڈ پاکٹ کی چوڑائی', mouth, 'جتنا پاکٹ کا کٹ، اتنی چوڑائی'],
+    ['فرنٹ پٹی کے کٹ کی لمبائی', len===null?null:r8(len/4 + (fp?2:1.5)), fp ? 'لمبائی ÷ 4 + دو انچ (فرنٹ پاکٹ)' : 'لمبائی ÷ 4 + ڈیڑھ انچ'],
+  ])]);
+  let b = rowsHtml([
+    ['بازو کا کندھا ڈاؤن', chest===null?null:r8(chest/10), 'چھاتی ÷ 10'],
+    ['تیار کندھا' + (plain ? '' : ' / تیار کف'), readyK, kand!==null ? 'آپ کا ناپ' : 'چھاتی ÷ 4'],
+    ['بازو کے کندھے کی کٹنگ', readyK===null?null:readyK+0.5, 'تیار کندھا + آدھا انچ (سلائی مارجن)'],
+    ['فرنٹ آرم ہول کی گولائی', readyK===null?null:readyK-1, 'تیار کندھے سے ایک انچ کم'],
+  ]);
+  if (plain){
+    const pm = mouthO !== null ? mouthO : (chest === null ? null : plainMouth(chest));
+    b += rowsHtml([['سادہ بازو کا تیار منہ', pm, mouthO !== null ? 'آپ کا ناپ' : 'چھاتی کے ٹیبل سے']]);
+  }
+  else b += rowsHtml([['چاک پٹی کا کٹ', sleeve===null?null:r8(sleeve/4), 'بازو کی لمبائی ÷ 4']]);
+  secs.push(['بازو', b]);
+  secs.push(['شلوار', rowsHtml([
+    ['شلوار کاٹنے کی لمبائی', shal===null?null:shal+3, 'تیار لمبائی + 3 انچ'],
+    ['شلوار کا گھیرا (' + stName + ')', shal===null?null:shTable(shal,col), 'شلوار کے چارٹ سے (لمبائی 20 سے 42 تک)'],
+    ['آسن', shal===null?null:shTable(shal,4), 'شلوار کے چارٹ سے (لمبائی 20 سے 42 تک)'],
+    ['کلیوں والی: تیرے والے حصے کی چوڑائی', pain===null?null:pain-0.5, 'پائنچہ − آدھا انچ'],
+    ['کلیوں کی نیچے والی چوڑائی', pain===null?null:2, 'دو انچ (دونوں طرف آدھا انچ سلائی)'],
+  ])]);
+  let t = rowsHtml([
+    ['نقطہ 1', tl===null?null:tl/2+1, 'تیرے کی لمبائی ÷ 2 + 1 انچ'],
+    ['نقطہ 2', tl===null?null:tl/2+0.5, 'تیرے کی لمبائی ÷ 2 + آدھا انچ'],
+  ]);
+  if (tl !== null) t += '<div class="note">نقطہ 1 سے نقطہ 2 تک شیپ دیں۔</div>';
+  t += rowsHtml([
+    ['نقطہ 3', tl===null?null:tl/4+0.75, 'تیرے کی لمبائی ÷ 4 + پونا انچ'],
+    ['نقطہ 4 (تیرے کا ہالہ)', thala, 'قمیض کا ہالہ (کالر ÷ 6) + آدھا انچ'],
+    ['نقطہ 5 (تیرے کی گہرائی)', thala===null?null:thala/2+0.25, 'تیرے کا ہالہ ÷ 2 + 2 سوتر'],
+    ['نقطہ 6', tl===null?null:0.5, 'تیرے کو نیچے سے آدھا انچ شیپ دیں'],
+  ]);
+  secs.push(['تیرا', t]);
+
+  // ناپ کا خلاصہ (اسی ترتیب سے)
+  const meas = [['قمیض کی لمبائی',len],['بازو کی لمبائی',sleeve],['تیرے کی لمبائی',tl],['کالر / بین',collar],
+    ['چھاتی',chest],['پیٹ',waist],['ہپ',hip],['شلوار کی لمبائی',shal],['پائنچہ',pain]].filter(m => m[1] !== null);
+  let sum = meas.length ? '<div class="sum">' + meas.map(m => '<div><span>' + m[0] + '</span><span>' + n2(m[1]) + '</span></div>').join('') + '</div>' : '';
+
+  let out = '', k = 0;
+  for (const [title, body] of secs){
+    if (!body) continue;
+    k++;
+    out += '<h3><span class="badge">' + k + '</span>' + title + '</h3>' + body;
+  }
+  const nameTxt = esc($('cname').value.trim());
+  $('stitle').textContent = nameTxt ? 'کٹنگ شیٹ: ' + nameTxt : 'کٹنگ کی ترتیب';
+  $('sdate').textContent = new Date().toLocaleDateString('en-GB');
+  $('sheet').innerHTML = out
+    ? (sum ? '<h3 style="margin-top:4px"><span class="badge">ناپ</span>گاہک کا ناپ (انچ)</h3>' + sum : '') + out
+    : '<div class="empty">اوپر ناپ لکھتے جائیں، ساری کٹنگ یہاں ترتیب سے آتی جائے گی</div>';
+}
+
+document.querySelectorAll('input, select').forEach(el => {
+  el.addEventListener('input', calc);
+  el.addEventListener('change', calc);
+});
+$('pdfbtn').addEventListener('click', () => {
+  try { window.print(); }
+  catch (e) { $('pdfhint').textContent = 'اس ونڈو سے پرنٹ نہیں ہو سکا۔ فائل کو براؤزر (کروم) میں کھول کر دوبارہ دبائیں۔'; }
+});
+calc();
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {})); }
+</script>
+</body>
+</html>

@@ -109,6 +109,14 @@ footer{font-size:13px; color:var(--muted); text-align:center; margin-top:10px}
 @media (prefers-color-scheme: dark){.btn{background:var(--tape);color:var(--tape-ink)}}
 .btn:focus-visible{outline:3px solid var(--chalk);outline-offset:2px}
 .printonly{display:none}
+
+.cust{display:flex;align-items:stretch;gap:6px;margin-bottom:6px}
+.cust .pick{flex:1;text-align:right;font:inherit;font-size:16px;background:var(--field);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer}
+.cust .pick small{display:block;color:var(--muted);font-size:12px;line-height:1.5}
+.cust.on .pick{border-color:var(--chalk);outline:2px solid var(--chalk)}
+.cust .del{font:inherit;font-size:16px;background:transparent;color:var(--seam);border:1.5px solid var(--line);border-radius:8px;padding:0 12px;cursor:pointer}
+.btn2{font:inherit;font-size:15px;background:var(--field);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:7px 14px;cursor:pointer}
+#savestat{min-height:1.6em}
 #sdate{direction:ltr;unicode-bidi:isolate;font-family:Tahoma,Arial,sans-serif}
 @media print{
   :root{--bg:#fff;--surface:#fff;--ink:#111;--muted:#444;--line:#bbb;--tape:#f3c623;--tape-ink:#2a2200;--seam:#c8372d;--chalk:#3d6cb9;--field:#fff;color-scheme:light}
@@ -130,19 +138,37 @@ footer{font-size:13px; color:var(--muted); text-align:center; margin-top:10px}
   <p>اکبر علی کی کٹنگ ایپ: ناپ لکھیں، ساری کٹنگ ایک ساتھ دیکھیں</p>
 </header>
 
+<section class="card noprint" id="custcard">
+  <div class="sheet-title">
+    <h2>محفوظ گاہک</h2>
+    <button class="btn" id="newbtn" type="button">نیا گاہک</button>
+  </div>
+  <div id="custlist"></div>
+  <p class="hint" id="savestat"></p>
+  <details>
+    <summary>بیک اپ (ڈیٹا کی نقل)</summary>
+    <p class="hint">گاہکوں کا ڈیٹا اسی فون کے براؤزر میں محفوظ ہوتا ہے۔ کروم کا ڈیٹا صاف کرنے سے مٹ سکتا ہے، اس لیے کبھی کبھی بیک اپ ڈاؤنلوڈ کر لیں۔</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn2" id="expbtn" type="button">بیک اپ ڈاؤنلوڈ کریں</button>
+      <button class="btn2" id="impbtn" type="button">بیک اپ بحال کریں</button>
+      <input type="file" id="impfile" accept=".json,application/json" style="display:none">
+    </div>
+  </details>
+</section>
+
 <section class="card inputs">
   <h2>گاہک اور ناپ (انچ میں)</h2>
   <div class="grid">
     <div class="full"><label for="cname">گاہک کا نام</label><input id="cname" type="text" placeholder="نام لکھیں"></div>
-    <div><label for="len">قمیض کی لمبائی</label><input id="len" type="number" inputmode="decimal" step="0.125" placeholder="36.5"></div>
-    <div><label for="sleeve">بازو کی لمبائی</label><input id="sleeve" type="number" inputmode="decimal" step="0.125" placeholder="24"></div>
+    <div><label for="len">قمیض کی لمبائی</label><input id="len" type="number" inputmode="decimal" step="0.125" placeholder="36"></div>
+    <div><label for="sleeve">بازو کی لمبائی</label><input id="sleeve" type="number" inputmode="decimal" step="0.125" placeholder="19"></div>
     <div><label for="tlen">تیرے کی لمبائی</label><input id="tlen" type="number" inputmode="decimal" step="0.125" placeholder="16"></div>
     <div><label for="collar">کالر / بین کی لمبائی</label><input id="collar" type="number" inputmode="decimal" step="0.125" placeholder="15"></div>
-    <div><label for="chest">چھاتی (گول)</label><input id="chest" type="number" inputmode="decimal" step="0.125" placeholder="46"></div>
-    <div><label for="waist">پیٹ (گول)</label><input id="waist" type="number" inputmode="decimal" step="0.125" placeholder="44"></div>
-    <div><label for="hip">ہپ (گول)</label><input id="hip" type="number" inputmode="decimal" step="0.125" placeholder="47"></div>
-    <div><label for="shal">شلوار کی لمبائی</label><input id="shal" type="number" inputmode="decimal" step="0.125" placeholder="34"></div>
-    <div><label for="pain">پائنچہ</label><input id="pain" type="number" inputmode="decimal" step="0.125" placeholder="9"></div>
+    <div><label for="chest">چھاتی (گول)</label><input id="chest" type="number" inputmode="decimal" step="0.125" placeholder="32"></div>
+    <div><label for="waist">پیٹ (گول)</label><input id="waist" type="number" inputmode="decimal" step="0.125" placeholder="33"></div>
+    <div><label for="hip">ہپ (گول)</label><input id="hip" type="number" inputmode="decimal" step="0.125" placeholder="35"></div>
+    <div><label for="shal">شلوار کی لمبائی</label><input id="shal" type="number" inputmode="decimal" step="0.125" placeholder="32"></div>
+    <div><label for="pain">پائنچہ</label><input id="pain" type="number" inputmode="decimal" step="0.125" placeholder="8"></div>
   </div>
   <p class="hint">آدھا = ‎.5 ، سوا = ‎.25 ، پونا = ‎.75 ، ایک سوتر = ‎.125 (انچ کا آٹھواں حصہ)۔ مثلاً ساڑھے 36 = 36.5</p>
   <details open>
@@ -382,10 +408,111 @@ function calc(){
     : '<div class="empty">اوپر ناپ لکھتے جائیں، ساری کٹنگ یہاں ترتیب سے آتی جائے گی</div>';
 }
 
-document.querySelectorAll('input, select').forEach(el => {
-  el.addEventListener('input', calc);
-  el.addEventListener('change', calc);
+// ---------- گاہکوں کا محفوظ ڈیٹا ----------
+const KEY = 'cutting_master_customers_v1';
+const FIELDS = ['cname','len','sleeve','tlen','collar','chest','waist','hip','shal','pain','addC','addW','addH','back','cuff','stype','kandha','mouthO'];
+const DEFAULTS = {addC:'4', addW:'4.5', addH:'5', back:'1', cuff:'plain', stype:'normal'};
+const TALHA = {cname:'طلحہ', len:'36', sleeve:'19', tlen:'16', collar:'15', chest:'32', waist:'33', hip:'35', shal:'32', pain:'8'};
+let customers = [], curId = null;
+
+function loadAll(){ try { customers = JSON.parse(localStorage.getItem(KEY) || '[]'); if (!Array.isArray(customers)) customers = []; } catch(e){ customers = []; } }
+function saveAll(){ try { localStorage.setItem(KEY, JSON.stringify(customers)); return true; } catch(e){ return false; } }
+function readForm(){ const o = {}; FIELDS.forEach(id => o[id] = $(id).value); o.fpocket = $('fpocket').checked; return o; }
+function fillForm(d){
+  FIELDS.forEach(id => { $(id).value = d[id] !== undefined ? d[id] : (DEFAULTS[id] !== undefined ? DEFAULTS[id] : ''); });
+  $('fpocket').checked = !!d.fpocket;
+}
+function status(t){ $('savestat').textContent = t; }
+
+function renderList(){
+  const box = $('custlist');
+  box.textContent = '';
+  if (!customers.length){ box.innerHTML = '<div class="empty" style="padding:8px 0">ابھی کوئی گاہک محفوظ نہیں</div>'; return; }
+  const list = customers.slice().sort((a,b) => (b.updated||0) - (a.updated||0));
+  for (const c of list){
+    const row = document.createElement('div');
+    row.className = 'cust' + (c.id === curId ? ' on' : '');
+    const pick = document.createElement('button');
+    pick.type = 'button'; pick.className = 'pick';
+    pick.appendChild(document.createTextNode(c.name));
+    const sm = document.createElement('small');
+    sm.textContent = c.updated ? new Date(c.updated).toLocaleDateString('en-GB') : '';
+    pick.appendChild(sm);
+    pick.addEventListener('click', () => { curId = c.id; fillForm(c.data || {}); calc(); renderList(); status('گاہک کھل گیا: ' + c.name); window.scrollTo({top:0, behavior:'smooth'}); });
+    const del = document.createElement('button');
+    del.type = 'button'; del.className = 'del'; del.textContent = 'حذف'; del.setAttribute('aria-label', 'حذف: ' + c.name);
+    del.addEventListener('click', () => {
+      if (!confirm(c.name + ' کا ڈیٹا حذف کریں؟')) return;
+      customers = customers.filter(x => x.id !== c.id); saveAll();
+      if (curId === c.id) newCustomer(); else renderList();
+      status('حذف ہو گیا');
+    });
+    row.appendChild(pick); row.appendChild(del); box.appendChild(row);
+  }
+}
+
+function autosave(){
+  const name = $('cname').value.trim();
+  if (!name){ status('گاہک کا نام لکھیں تاکہ ناپ محفوظ ہو جائے'); return; }
+  let rec = customers.find(c => c.id === curId);
+  if (!rec){ curId = 'c' + Date.now() + Math.floor(Math.random()*1000); rec = {id: curId, created: Date.now()}; customers.push(rec); }
+  rec.name = name; rec.data = readForm(); rec.updated = Date.now();
+  status(saveAll() ? 'محفوظ ہو گیا ✓' : 'محفوظ نہیں ہو سکا (براؤزر نے اجازت نہیں دی)');
+  renderList();
+}
+
+function newCustomer(){
+  curId = null; fillForm({}); calc(); renderList(); status('نیا گاہک: نام لکھیں');
+}
+
+$('newbtn').addEventListener('click', () => { newCustomer(); $('cname').focus(); });
+$('expbtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(customers, null, 1)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'cutting-master-backup.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  status('بیک اپ ڈاؤنلوڈ ہو گیا');
 });
+$('impbtn').addEventListener('click', () => $('impfile').click());
+$('impfile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const arr = JSON.parse(r.result);
+      if (!Array.isArray(arr)) throw new Error('bad');
+      let n = 0;
+      for (const c of arr){
+        if (!c || !c.id || !c.name || !c.data) continue;
+        const i = customers.findIndex(x => x.id === c.id);
+        if (i >= 0) customers[i] = c; else customers.push(c);
+        n++;
+      }
+      saveAll(); renderList(); status(n + ' گاہک بحال ہو گئے');
+    } catch(err){ status('یہ بیک اپ فائل درست نہیں'); }
+    e.target.value = '';
+  };
+  r.readAsText(f);
+});
+
+document.querySelectorAll('.inputs input, .inputs select').forEach(el => {
+  const h = () => { calc(); autosave(); };
+  el.addEventListener('input', h);
+  el.addEventListener('change', h);
+});
+
+try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch(e){}
+loadAll();
+if (!customers.length){
+  const t = Object.assign({}, TALHA, {fpocket:false});
+  const rec = {id:'c' + Date.now(), created: Date.now(), updated: Date.now(), name: TALHA.cname, data: t};
+  customers.push(rec); saveAll(); curId = rec.id; fillForm(t); status('نمونے کے طور پر طلحہ کا ناپ محفوظ ہے');
+} else {
+  fillForm({}); status('نیا گاہک: نام لکھیں');
+}
+renderList();
+calc();
 $('pdfbtn').addEventListener('click', () => {
   try { window.print(); }
   catch (e) { $('pdfhint').textContent = 'اس ونڈو سے پرنٹ نہیں ہو سکا۔ فائل کو براؤزر (کروم) میں کھول کر دوبارہ دبائیں۔'; }
